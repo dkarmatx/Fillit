@@ -6,11 +6,11 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:42:25 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/27 17:19:02 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:22:17 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft.h" //ДЛЯ ДЕБАГИНГА
 #include "tetraminos.h"
 
 static unsigned short	tetromino_masks(unsigned short *t)
