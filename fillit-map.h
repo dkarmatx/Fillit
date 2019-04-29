@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 04:58:58 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/29 07:25:28 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/04/29 10:00:58 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@
 */
 void	draw_tmap(char map[MS][MS + 1], unsigned short tetr, \
 int crd[2], char c);
+int		try_pos(char mp[MS][MS + 1], unsigned short tetr, int crd[2]);
 
 #endif

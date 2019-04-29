@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/29 07:42:07 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/04/29 10:19:28 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ int			main(int argc, char const *argv[])
 		invalid_tetr_handler();
 	ttrs_input(fd , tetrominos);
 	draw_tmap(map, TETR_L_1, xy, 'A');
+	xy[0] += 1;
+	if (try_pos(map, TETR_S_V, xy))
+		draw_tmap(map, TETR_S_V, xy, 'B');
+	xy[0] += 1;
+	if (try_pos(map, TETR_L_3, xy))
+		draw_tmap(map, TETR_L_3, xy, 'C');
 	print_the_map(map);
 	return (0);
 }
