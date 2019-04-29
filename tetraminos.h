@@ -6,19 +6,24 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 04:58:10 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/27 17:17:50 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/04/29 07:09:07 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TETRAMINOS_H
 # define TETRAMINOS_H
 
+# include "libft.h"
+# include "fillit-input.h"
+# include "fillit-handlers.h"
+# include "fillit-map.h"
+
 # define TETR_I_H (unsigned short)0b1111000000000000
 # define TETR_I_V (unsigned short)0b1000100010001000
 
 # define TETR_L_1 (unsigned short)0b1000100011000000
 # define TETR_L_2 (unsigned short)0b1110100000000000
-# define TETR_L_3 (unsigned short)0b1100100010000000
+# define TETR_L_3 (unsigned short)0b1100010001000000
 # define TETR_L_4 (unsigned short)0b0010111000000000
 
 # define TETR_J_1 (unsigned short)0b0100010011000000
@@ -45,5 +50,6 @@
 ** она возвращается через return ;
 */
 unsigned short		tetromino_parser(char *a);
+size_t				ttrs_size(unsigned short *ttrs);
 
 #endif
