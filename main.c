@@ -6,59 +6,81 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/29 10:19:28 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/05 04:50:32 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tetraminos.h"
 #include <fcntl.h>
+#include <stdlib.h>
 
-static void	print_the_map(char map[MS][MS + 1])
+static int			sqrt_ceil(int b)
 {
-	int		i;
+	int			a;
 
-	i = -1;
-	while (++i < 16)
-		ft_putendl(map[i]);
+	a = 2;
+	while (a * a < b)
+		a++;
+	return (a);
 }
 
-int			main(int argc, char const *argv[])
+/*
+** Генерация матрицы для одного элемента, где с это символ зарисовки элемента.
+*/
+static t_dlist		*matrix_gen(unsigned short ttr, char c, int square)
+{
+	
+}
+
+/*
+** Создание массива матриц инцидентности для каждого элемента.
+*/
+static t_dlist		**matrix_init(unsigned short *ttrs, int square)
+{
+	const int		size = ttrs_size(ttrs);
+	t_dlist			**matrix;
+	int				i;
+	char			c;
+
+	matrix = (t_dlist **)malloc(sizeof(t_dlist *) * size);
+	i = 0;
+	c = 'A';
+	while (i < size)
+		matrix[i] = matrix_gen(ttrs[i++], c++, square);
+	return (matrix);
+}
+
+/*
+** Алгоритм Х возвращающий строку с решением.
+*/
+static char			*algorithm_x(unsigned short *ttrs, int square)
+{
+	const t_dlist	**matrix = matrix_init(ttrs, square);
+}
+
+/*
+** Запуск Алгоритма Х для квадрата определнной длины.
+*/
+static void			solver(unsigned short *ttrs)
+{
+	const int	size = ttrs_size(ttrs);
+	int			square;
+
+	square = sqrt_ceil(size * 4);
+	while (!algorithm_x(ttrs, square))
+		square++;
+}
+
+int					main(int argc, char const *argv[])
 {
 	unsigned short	tetrominos[MAX_TETROMINOS + 1];
-	char			map[MAX_SQUARE][MAX_SQUARE + 1] =
-	{
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................",
-		"................"
-	};
 	int				fd;
-	int				xy[] = {1, 1};
 
 	if (argc < 2)
 		invalid_tetr_handler();
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		invalid_tetr_handler();
-	ttrs_input(fd , tetrominos);
-	draw_tmap(map, TETR_L_1, xy, 'A');
-	xy[0] += 1;
-	if (try_pos(map, TETR_S_V, xy))
-		draw_tmap(map, TETR_S_V, xy, 'B');
-	xy[0] += 1;
-	if (try_pos(map, TETR_L_3, xy))
-		draw_tmap(map, TETR_L_3, xy, 'C');
-	print_the_map(map);
+	ttrs_input(fd, tetrominos);
+	solver(tetrominos);
 	return (0);
 }

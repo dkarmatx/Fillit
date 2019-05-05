@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 04:58:10 by hgranule          #+#    #+#             */
-/*   Updated: 2019/04/29 07:09:07 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/05 00:49:38 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define TETRAMINOS_H
 
 # include "libft.h"
-# include "fillit-input.h"
-# include "fillit-handlers.h"
-# include "fillit-map.h"
+# include "fillit_input.h"
+# include "fillit_handlers.h"
 
 # define TETR_I_H (unsigned short)0b1111000000000000
 # define TETR_I_V (unsigned short)0b1000100010001000
