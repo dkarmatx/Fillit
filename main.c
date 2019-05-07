@@ -6,13 +6,14 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/07 05:57:00 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/07 06:54:58 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tetraminos.h"
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static int			sqrt_ceil(int b)
 {
@@ -94,7 +95,7 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 	int				i;
 	char			c;
 
-	matrix = (t_dlist **)malloc(sizeof(t_dlist *) * size);
+	matrix = (t_dlist **)malloc(sizeof(t_dlist *) * (size + 1));
 	i = 0;
 	c = 'A';
 	while (i < size)
@@ -102,15 +103,37 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 		matrix[i] = matrix_gen(ttrs[i], c++, square);
 		i++;
 	}
+	matrix[size] = 0;
 	return (matrix);
 }
 
 /*
-** Алгоритм Х возвращающий строку с решением.
+** Иницилизация решения алгоритмом Х
 */
-static char			*algorithm_x(unsigned short *ttrs, int square)
+static char			*x_init(unsigned short *ttrs, int square)
 {
-	const t_dlist	**matrix = matrix_init(ttrs, square);
+	const t_dlist	**matrix = (const t_dlist **)matrix_init(ttrs, square);
+	// t_dlist			*b;
+	// char			*a;
+	//
+	// for (int i = 0; i < ttrs_size(ttrs); i++)
+	// {
+	// 	b = (t_dlist *)matrix[i];
+	// 	while(b)
+	// 	{
+	// 		a = b->content;
+	// 		for (int j = 0; j < square; j++)
+	// 		{
+	// 			write(1, a, square);
+	// 			a = a + square;
+	// 			write(1, "\n", 1);
+	// 		}
+	// 		b = b->next;
+	// 		write(1, "\n", 1);
+	// 	}
+	// 	write(1, "\n**\n", 4);
+	// }
+	// return ((char *)1);
 }
 
 /*
@@ -122,7 +145,7 @@ static void			solver(unsigned short *ttrs)
 	int			square;
 
 	square = sqrt_ceil(size * 4);
-	while (!algorithm_x(ttrs, square))
+	while (!x_init(ttrs, square))
 		square++;
 }
 
