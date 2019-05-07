@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/05 05:15:02 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/07 05:57:00 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,64 @@ static int			sqrt_ceil(int b)
 	return (a);
 }
 
-/*
-** Генерация матрицы для одного элемента, где с это символ зарисовки элемента.
-** step_check должна проверить для данного шага, можно ли туда вставить тетромину.
-** step_check вернет -1 то значит мы перебрали все варинаты (правый нижний угол).
-** если вернет 0, значит мы дошли до правой границы и надо перескочить шаг на следущий "ряд"
-** ПО задумке после матрикс_ген функции вернется матрица на двусвязном списке, где строки
-** этой матрицы это все возможные позиции тетроминки на карте.
-*/
+static char			*str_gen(unsigned short ttr, char c, int square, int step)
+{
+	char		*str;
+	int			i;
+	int			row;
+
+	i = 0;
+	row = step / square;
+	str = (char *)malloc(square * square + 1);
+	ft_memset(str, '.', square * square);
+	while (i++ < 4)
+	{
+		if (ttr & 0b1000000000000000)
+			if (row < square || (i = 0))
+				str[step] = c;
+		if (ttr & 0b0100000000000000)
+			if (((step + 1) < ((row + 1) * square) && row < square) || (i = 0))
+				str[step + 1] = c;
+		if (ttr & 0b0010000000000000)
+			if (((step + 2) < ((row + 1) * square) && row < square) || (i = 0))
+				str[step + 2] = c;
+		if (ttr & 0b0001000000000000)
+			if (((step + 3) < ((row + 1) * square) && row < square) || (i = 0))
+				str[step + 3] = c;
+		if (!i)
+			return (0);
+		ttr <<= 4;
+		step += square;
+		row++;
+	}
+	str[square * square] = 0;
+	return (str);
+}
+
 static t_dlist		*matrix_gen(unsigned short ttr, char c, int square)
 {
-	int		step;
-	int		res;
+	int				step;
+	const size_t	square2 = square * square;
+	t_dlist			*matrix[2];
+	char			*str;
 
-	step = 0;
-	while (1)
+	matrix[0] = 0;
+	step = square2;
+	while (--step >= 0)
 	{
-		if ((res = step_check(ttr, square)) == -1) //TODO Сделать функцию степчек, либо продумать перебор
-			break;
-		if (res == 0)
-			step = ((step / square) * square) + 1;
-		if (res == 1)
+		if ((str = str_gen(ttr, c, square, step)))
 		{
-			
+			if (!matrix[0])
+				matrix[0] = ft_dlstnew(str, square2 + 1);
+			else
+			{
+				matrix[1] = ft_dlstnew(str, square2 + 1);
+				ft_dlstunshift(&(matrix[0]), matrix[1]);
+			}
+			ft_strdel(&str);
 		}
 	}
+	return (matrix[0]);
 }
 
 /*
@@ -65,7 +98,10 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 	i = 0;
 	c = 'A';
 	while (i < size)
-		matrix[i] = matrix_gen(ttrs[i++], c++, square);
+	{
+		matrix[i] = matrix_gen(ttrs[i], c++, square);
+		i++;
+	}
 	return (matrix);
 }
 
