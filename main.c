@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/08 16:13:32 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:42:57 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,26 +105,6 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 	}
 	matrix[size] = ft_dlstnew(0, 0);
 	return (matrix);
-}
-
-static t_dlist		*spec_dlst_cut(t_dlist **cutdlst)
-{
-	const t_dlist		*clst = (*cutdlst);
-
-	if (!cutdlst || !(*cutdlst))
-		return (0);
-	if (!((*cutdlst)->prev) && !((*cutdlst)->next))
-	{
-		*cutdlst = (t_dlist *)0;
-		return (clst);
-	}
-	if ((*cutdlst)->prev)
-		(*cutdlst)->prev->next = (*cutdlst)->next;
-	else
-		(*cutdlst) = (*cutdlst)->next;
-	if ((*cutdlst)->next)
-		(*cutdlst)->next->prev = (*cutdlst)->prev;
-	return (clst);
 }
 
 static void			x_cache_push_init(t_dlist *row, int	steps[4])
