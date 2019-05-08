@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/08 16:42:57 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:11:15 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+t_dlist **G_MATRIX_WATCH;
+t_dlist *G_CACHE_WATCH;
 
 static int			sqrt_ceil(int b)
 {
@@ -115,7 +118,7 @@ static void			x_cache_push_init(t_dlist *row, int	steps[4])
 	i[0] = -1;
 	i[1] = 0;
 	row_str = row->content;
-	while (++(i[0]))
+	while (++(i[0]) < 4)
 	{
 		while (row_str[i[1]] == '.')
 			(i[1])++;
@@ -123,40 +126,47 @@ static void			x_cache_push_init(t_dlist *row, int	steps[4])
 	}
 }
 
+static void			x_cache_pull(t_dlist **matrix, t_dlist *cache)
+{
+	return ;
+}
+
 /*
 ** Функция удаляет все разногласия для конкретного ряда во всех нижестоящих матрицах.
 ** При конфликте в начале матрицы ее начало должно переноситься.
 ** Если одна из следующих матриц теряет все строки, то ее указатель приравнивается к 0.
 */
-static void			x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist *cache)
+static t_dlist		*x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist *cache)
 {
 	int			step[4];
-	t_dlist		*cut_row;
-	t_dlist		*cutted;
+	t_dlist		*cur_map;
 	char		*str;
 
 	x_cache_push_init(row, step);
 	matrix++;
 	while ((*matrix)->content)
 	{
-		cut_row = (*matrix);
-		while (cut_row && (str = cut_row->content))
+		cur_map = *matrix;
+		while (cur_map)
 		{
-			cutted = cut_row;
-			cut_row = cut_row->next;
+			str = cur_map->content;
 			if (str[step[0]] != '.' || str[step[1]] != '.' \
 			|| str[step[2]] != '.' || str[step[3]] != '.')
 			{
-				cutted = spec_dlst_cut(&cutted);
+				
 			}
+			else
+				cur_map = cur_map->prev;
 		}
-		matrix++;
+		matrix += 1;
 	}
+	return (cache);
 }
 
 static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 {
 	t_dlist		*cache; // кеш представляет из себя двусвязанный список. в начале стоит
+	G_CACHE_WATCH = cache;
 
 	if (!(*matrix))
 		return (0);
@@ -164,7 +174,7 @@ static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 		return (result); // сюда заходит на последней матрице, в нашем массиве последняя матрица "не имеет контента"
 	while (row)
 	{
-		x_cache_push(matrix, row, cache);
+		cache = x_cache_push(matrix, row, cache);
 		if (!(x_do_it((matrix + 1), *(matrix + 1), result)))
 		{
 			x_cache_pull(matrix, cache);
@@ -189,6 +199,9 @@ static char			*x_init(unsigned short *ttrs, int square)
 	matrix = (t_dlist **)matrix_init(ttrs, square);
 	result = (char *)malloc(square * square);
 	ft_memset(result, '.', square * square);
+
+	G_MATRIX_WATCH = matrix;
+	
 	return (x_do_it(matrix, *matrix, result));
 }
 
