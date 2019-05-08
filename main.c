@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/07 06:54:58 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:13:32 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,99 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 		matrix[i] = matrix_gen(ttrs[i], c++, square);
 		i++;
 	}
-	matrix[size] = 0;
+	matrix[size] = ft_dlstnew(0, 0);
 	return (matrix);
+}
+
+static t_dlist		*spec_dlst_cut(t_dlist **cutdlst)
+{
+	const t_dlist		*clst = (*cutdlst);
+
+	if (!cutdlst || !(*cutdlst))
+		return (0);
+	if (!((*cutdlst)->prev) && !((*cutdlst)->next))
+	{
+		*cutdlst = (t_dlist *)0;
+		return (clst);
+	}
+	if ((*cutdlst)->prev)
+		(*cutdlst)->prev->next = (*cutdlst)->next;
+	else
+		(*cutdlst) = (*cutdlst)->next;
+	if ((*cutdlst)->next)
+		(*cutdlst)->next->prev = (*cutdlst)->prev;
+	return (clst);
+}
+
+static void			x_cache_push_init(t_dlist *row, int	steps[4])
+{
+	int		i[2];
+	char	*row_str;
+
+	i[0] = -1;
+	i[1] = 0;
+	row_str = row->content;
+	while (++(i[0]))
+	{
+		while (row_str[i[1]] == '.')
+			(i[1])++;
+		steps[i[0]] = (i[1])++;
+	}
+}
+
+/*
+** Функция удаляет все разногласия для конкретного ряда во всех нижестоящих матрицах.
+** При конфликте в начале матрицы ее начало должно переноситься.
+** Если одна из следующих матриц теряет все строки, то ее указатель приравнивается к 0.
+*/
+static void			x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist *cache)
+{
+	int			step[4];
+	t_dlist		*cut_row;
+	t_dlist		*cutted;
+	char		*str;
+
+	x_cache_push_init(row, step);
+	matrix++;
+	while ((*matrix)->content)
+	{
+		cut_row = (*matrix);
+		while (cut_row && (str = cut_row->content))
+		{
+			cutted = cut_row;
+			cut_row = cut_row->next;
+			if (str[step[0]] != '.' || str[step[1]] != '.' \
+			|| str[step[2]] != '.' || str[step[3]] != '.')
+			{
+				cutted = spec_dlst_cut(&cutted);
+			}
+		}
+		matrix++;
+	}
+}
+
+static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
+{
+	t_dlist		*cache; // кеш представляет из себя двусвязанный список. в начале стоит
+
+	if (!(*matrix))
+		return (0);
+	if (!((*matrix)->content))
+		return (result); // сюда заходит на последней матрице, в нашем массиве последняя матрица "не имеет контента"
+	while (row)
+	{
+		x_cache_push(matrix, row, cache);
+		if (!(x_do_it((matrix + 1), *(matrix + 1), result)))
+		{
+			x_cache_pull(matrix, cache);
+			row = row->next;
+		}
+		else
+		{
+			return (result); // ЕЩЕ ОДИН ПОЛОЖИТЕЛЬНЫЙ ИСХОД.
+		}
+	}
+	return (0);
 }
 
 /*
@@ -112,28 +203,13 @@ static t_dlist		**matrix_init(unsigned short *ttrs, int square)
 */
 static char			*x_init(unsigned short *ttrs, int square)
 {
-	const t_dlist	**matrix = (const t_dlist **)matrix_init(ttrs, square);
-	// t_dlist			*b;
-	// char			*a;
-	//
-	// for (int i = 0; i < ttrs_size(ttrs); i++)
-	// {
-	// 	b = (t_dlist *)matrix[i];
-	// 	while(b)
-	// 	{
-	// 		a = b->content;
-	// 		for (int j = 0; j < square; j++)
-	// 		{
-	// 			write(1, a, square);
-	// 			a = a + square;
-	// 			write(1, "\n", 1);
-	// 		}
-	// 		b = b->next;
-	// 		write(1, "\n", 1);
-	// 	}
-	// 	write(1, "\n**\n", 4);
-	// }
-	// return ((char *)1);
+	t_dlist		**matrix;
+	char		*result;
+
+	matrix = (t_dlist **)matrix_init(ttrs, square);
+	result = (char *)malloc(square * square);
+	ft_memset(result, '.', square * square);
+	return (x_do_it(matrix, *matrix, result));
 }
 
 /*
