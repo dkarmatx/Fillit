@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/10 11:36:20 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/10 13:15:29 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,17 @@ static t_dlist		*matrix_gen(unsigned short ttr, char c, int square)
 	return (matrix[0]);
 }
 
+static void			x_finish_him(char *res, char *row)
+{
+	while (*row)
+	{
+		if (*row != '.')
+			*res = *row;
+		res++;
+		row++;
+	}
+}
+
 /*
 ** Создание массива матриц инцидентности для каждого элемента.
 */
@@ -150,14 +161,14 @@ static void			x_cache_pull(t_dlist **matrix, t_dlist **cache, t_dlist **cache_b)
 ** При конфликте в начале матрицы ее начало должно переноситься.
 ** Если одна из следующих матриц теряет все строки, то ее указатель приравнивается к 0.
 */
-static void		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
+static char		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
 {
 	int			step[4];
 	t_dlist		*cutted;
 	char		*str;
 
 	x_cache_push_init(row, step);
-	while ((*(++matrix))->content && (((row = *matrix)) || 1))
+	while ((row = *(++matrix)) && (*(matrix))->content)
 		while (row && (str = row->content))
 			if (str[step[0]] != '.' || str[step[1]] != '.' || \
 			str[step[2]] != '.' || str[step[3]] != '.')
@@ -173,9 +184,12 @@ static void		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
 			}
 			else
 				row = row->next;
+	if (row == 0)
+		return (0);
+	return (1);
 }
 
-static void			x_cache_b_push(t_dlist **matrix, t_dlist **cache_b)
+static char			x_cache_b_push(t_dlist **matrix, t_dlist **cache_b)
 {
 	while (!(*(++matrix)) || (*(matrix))->content)
 	{
@@ -186,12 +200,16 @@ static void			x_cache_b_push(t_dlist **matrix, t_dlist **cache_b)
 		(*cache_b)->content = (*matrix);
 		(*cache_b)->size = (sizeof(t_dlist *));
 	}
+	if (*matrix == 0)
+		return (0);
+	return (1);
 }
 
 static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 {
 	t_dlist		*cache; // кеш представляет из себя двусвязанный список. в начале стоит
 	t_dlist		*cache_b; // кеш начальных элементов.
+	char		cs[2];
 
 	cache = 0;
 	cache_b = 0;
@@ -202,16 +220,16 @@ static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 	while (row)
 	{
 		ft_putendl(row->content);
-		x_cache_b_push(matrix, &cache_b);
-		x_cache_push(matrix, row, &cache);
-		if (!(x_do_it((matrix + 1), *(matrix + 1), result)))
+		cs[0] = x_cache_b_push(matrix, &cache_b);
+		cs[1] = x_cache_push(matrix, row, &cache);
+		if (!cs[0] || !cs[1] || !(x_do_it((matrix + 1), *(matrix + 1), result)))
 		{
 			x_cache_pull(matrix, &cache, &cache_b);
 			row = row->next;
 		}
 		else
 		{
-			ft_putendl(row->content);
+			x_finish_him(result, row->content);
 			return (result); // ЕЩЕ ОДИН ПОЛОЖИТЕЛЬНЫЙ ИСХОД.
 		}
 	}
@@ -242,10 +260,19 @@ static void			solver(unsigned short *ttrs)
 {
 	const int	size = ttrs_size(ttrs);
 	int			square;
+	int			row;
+	char		*result;
 
 	square = sqrt_ceil(size * 4);
-	while (!x_init(ttrs, square))
+	while (!(result = x_init(ttrs, square)))
 		square++;
+	row = 0;
+	while (row < square)
+	{
+		write(1, &(result[row * square]), square);
+		write(1, "\n", 1);
+		row++;
+	}
 }
 
 int					main(int argc, char const *argv[])
