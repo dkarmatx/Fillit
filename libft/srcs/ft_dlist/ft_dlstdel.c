@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 15:17:53 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/03 15:34:50 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/12 21:44:39 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	ft_dlstdel(t_dlist **dlst, size_t n)
 		if (tmp->content && tmp->size)
 			free(tmp->content);
 		(*dlst) = (*dlst)->next;
-		(*dlst)->prev = 0;
+		if (*dlst)
+			(*dlst)->prev = 0;
 		free(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/10 13:15:29 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:43:38 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-t_dlist **G_MATRIX_WATCH;
-t_dlist *G_CACHE_WATCH;
+t_dlist				**g_matrix_watch;
 
 static int			sqrt_ceil(int b)
 {
@@ -53,7 +52,10 @@ static char			*str_gen(unsigned short ttr, char c, int square, int step)
 			if (((step + 3) < ((row + 1) * square) && row < square) || (i = 0))
 				str[step + 3] = c;
 		if (!i)
+		{
+			ft_strdel(&str);
 			return (0);
+		}
 		ttr <<= 4;
 		step += square;
 		row++;
@@ -140,20 +142,25 @@ static void			x_cache_push_init(t_dlist *row, int	steps[4])
 static void			x_cache_pull(t_dlist **matrix, t_dlist **cache, t_dlist **cache_b)
 {
 	t_dlist		*cur_cached;
+	t_dlist		*cb;
+	t_dlist		*c;
 
 	while (*cache)
 	{
 		cur_cached = (t_dlist *)(*cache)->content;
 		ft_dlstinsert(cur_cached, cur_cached->prev, cur_cached->next);
+		c = *cache;
 		(*cache) = (*cache)->next;
+		free(c);
 	}
 	while (*cache_b)
 	{
 		matrix++;
 		(*matrix) = (*cache_b)->content;
+		c = *cache_b;
 		(*cache_b) = (*cache_b)->next;
+		free(c);
 	}
-	return ;
 }
 
 /*
@@ -169,6 +176,7 @@ static char		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
 
 	x_cache_push_init(row, step);
 	while ((row = *(++matrix)) && (*(matrix))->content)
+	{
 		while (row && (str = row->content))
 			if (str[step[0]] != '.' || str[step[1]] != '.' || \
 			str[step[2]] != '.' || str[step[3]] != '.')
@@ -184,6 +192,9 @@ static char		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
 			}
 			else
 				row = row->next;
+		if (*matrix == 0)
+			return (0);
+	}
 	if (row == 0)
 		return (0);
 	return (1);
@@ -194,7 +205,7 @@ static char			x_cache_b_push(t_dlist **matrix, t_dlist **cache_b)
 	while (!(*(++matrix)) || (*(matrix))->content)
 	{
 		if (*cache_b)
-			ft_dlstpush(cache_b, ft_dlstnew(0, 0));
+			ft_dlstunshift(cache_b, ft_dlstnew(0, 0));
 		else
 			*cache_b = ft_dlstnew(0, 0);
 		(*cache_b)->content = (*matrix);
@@ -219,7 +230,6 @@ static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 		return (result); // сюда заходит на последней матрице, в нашем массиве последняя матрица "не имеет контента"
 	while (row)
 	{
-		ft_putendl(row->content);
 		cs[0] = x_cache_b_push(matrix, &cache_b);
 		cs[1] = x_cache_push(matrix, row, &cache);
 		if (!cs[0] || !cs[1] || !(x_do_it((matrix + 1), *(matrix + 1), result)))
@@ -230,6 +240,7 @@ static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 		else
 		{
 			x_finish_him(result, row->content);
+			x_cache_pull(matrix, &cache, &cache_b);
 			return (result); // ЕЩЕ ОДИН ПОЛОЖИТЕЛЬНЫЙ ИСХОД.
 		}
 	}
@@ -242,15 +253,28 @@ static char			*x_do_it(t_dlist **matrix, t_dlist *row, char *result)
 static char			*x_init(unsigned short *ttrs, int square)
 {
 	t_dlist		**matrix;
+	t_dlist		**rm;
 	char		*result;
+	char		*b;
 
 	matrix = (t_dlist **)matrix_init(ttrs, square);
 	result = (char *)malloc(square * square);
 	ft_memset(result, '.', square * square);
-
-	G_MATRIX_WATCH = matrix;
-	
-	return (x_do_it(matrix, *matrix, result));
+	g_matrix_watch = matrix;
+	b = x_do_it(matrix, *matrix, result);
+	rm = matrix;
+	while (((*rm)->content))
+	{
+		if (*rm != 0)
+			ft_dlstdel(rm, (size_t)-1);
+		rm++;
+	}
+	if (*rm != 0)
+		ft_dlstdel(rm, (size_t)-1);
+	free(matrix);
+	if (!b)
+		ft_strdel(&result);
+	return (result);
 }
 
 /*
@@ -265,7 +289,10 @@ static void			solver(unsigned short *ttrs)
 
 	square = sqrt_ceil(size * 4);
 	while (!(result = x_init(ttrs, square)))
+	{
+		free(result);
 		square++;
+	}
 	row = 0;
 	while (row < square)
 	{
@@ -273,6 +300,7 @@ static void			solver(unsigned short *ttrs)
 		write(1, "\n", 1);
 		row++;
 	}
+	ft_strdel(&result);
 }
 
 int					main(int argc, char const *argv[])
