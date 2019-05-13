@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fillit_handlers.h                                  :+:      :+:    :+:   */
+/*   fillit_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/28 23:48:26 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 04:29:40 by hgranule         ###   ########.fr       */
+/*   Created: 2019/04/28 23:47:36 by hgranule          #+#    #+#             */
+/*   Updated: 2019/05/13 04:36:18 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLIT_HANDLERS_H
-# define FILLIT_HANDLERS_H
+#include <stdlib.h>
+#include "tetraminos.h"
 
-# include "libft.h"
+void		invalid_tetr_handler(void)
+{
+	ft_putendl("error");
+	exit(1);
+}
 
-void		invalid_tetr_handler(void);
-void		x_finish_him(char *res, char *row);
-
-#endif
+void		x_finish_him(char *res, char *row)
+{
+	while (*row)
+	{
+		if (*row != '.')
+			*res = *row;
+		res++;
+		row++;
+	}
+}

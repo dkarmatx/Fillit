@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 04:58:10 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/05 00:49:38 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 04:38:47 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "fillit_input.h"
 # include "fillit_handlers.h"
+# include "fillit_x.h"
 
 # define TETR_I_H (unsigned short)0b1111000000000000
 # define TETR_I_V (unsigned short)0b1000100010001000
@@ -43,11 +44,6 @@
 
 # define TETR_O_1 (unsigned short)0b1100110000000000
 
-/*
-** Сюда приходит строка типа "....\n....\n....\n....\n"
-** Если в строке содержится валидная тетроминка, то
-** она возвращается через return ;
-*/
 unsigned short		tetromino_parser(char *a);
 size_t				ttrs_size(unsigned short *ttrs);
 

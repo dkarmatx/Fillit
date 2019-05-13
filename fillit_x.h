@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   invalid_tetr_handler.c                             :+:      :+:    :+:   */
+/*   fillit_x.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/28 23:47:36 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/05 00:52:38 by hgranule         ###   ########.fr       */
+/*   Created: 2019/05/13 04:38:07 by hgranule          #+#    #+#             */
+/*   Updated: 2019/05/13 04:41:50 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "tetraminos.h"
+#ifndef FILLIT_X_H
+# define FILLIT_X_H
 
-void		invalid_tetr_handler(void)
-{
-	ft_putendl("error");
-	exit(1);
-}
+# include "tetraminos.h"
+
+char		*x_do_it(t_dlist **matrix, t_dlist *row, char *result);
+int			sqrt_ceil(int b);
+char		*str_gen(unsigned short ttr, char c, int square, int step);
+t_dlist		*matrix_gen(unsigned short ttr, char c, int square);
+t_dlist		**matrix_init(unsigned short *ttrs, int square);
+
+#endif
