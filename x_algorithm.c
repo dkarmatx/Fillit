@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 04:27:42 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 04:42:17 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 05:45:16 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void		x_cache_pull(t_dlist **matrix, t_dlist **cache, \
 t_dlist **cache_b)
 {
 	t_dlist	*cur_cached;
-	t_dlist	*cb;
 	t_dlist	*c;
 
 	while (*cache)

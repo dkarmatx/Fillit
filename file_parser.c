@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:21:31 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/12 16:46:22 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 05:44:49 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void		ttrs_input(int fd, unsigned short ttrs[MT + 1])
 	char			buff[VALID_TTR_SYM_COUNT + 2];
 
 	ft_bzero(ttrs, MT + 1);
+	rmem = 0;
 	while (rmem != 20 && (rmem = read(fd, buff, VALID_TTR_SYM_COUNT + 1)) > 0)
 	{
 		buff[VALID_TTR_SYM_COUNT + 1] = 0;
