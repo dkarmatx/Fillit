@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 04:40:39 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 06:39:06 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void			solver(unsigned short *ttrs)
 	int			row;
 	char		*result;
 
-	square = sqrt_ceil(size * 4);
+	square = sqrt_ceil(size * 4, ttrs);
 	while (!(result = x_init(ttrs, square)))
 	{
 		free(result);

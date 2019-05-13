@@ -6,20 +6,39 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 04:33:20 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 04:36:25 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 06:36:38 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tetraminos.h"
 #include <stdlib.h>
 
-int			sqrt_ceil(int b)
+int			sqrt_ceil(int b , unsigned short *ttrs)
 {
 	int			a;
+	int			sq_hack;
 
+	sq_hack = 0;
 	a = 2;
-	while (a * a < b)
-		a++;
+	while (*ttrs == TETR_O_1)
+	{
+		ttrs++;
+		sq_hack++;
+	}
+	if (*ttrs == 0)
+	{
+		if (sq_hack > 4)
+			a = 6;
+		if (sq_hack > 9)
+			a = 8;
+		if (sq_hack > 16)
+			a = 10;
+		if (sq_hack > 24)
+			a = 12;
+	}
+	else
+		while (a * a < b)
+			a++;
 	return (a);
 }
 

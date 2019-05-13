@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:21:31 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 05:44:49 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/13 06:23:53 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ void		ttrs_input(int fd, unsigned short ttrs[MT + 1])
 	}
 	if (rmem != 20)
 		invalid_tetr_handler();
-	ttrs[MT] = 0;
+	ttrs[len + 1] = 0;
 }

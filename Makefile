@@ -6,7 +6,7 @@
 #    By: hgranule <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/12 17:30:27 by hgranule          #+#    #+#              #
-#    Updated: 2019/05/13 05:46:19 by hgranule         ###   ########.fr        #
+#    Updated: 2019/05/13 06:48:01 by hgranule         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,28 +31,34 @@ LIBFT_H = -I $(LIB_DIR)/includes
 all: $(NAME)
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-	make -C $(CUR_DIR) $(OBJS)
+	@mkdir -p $(OBJ_DIR)
+	@make -C $(CUR_DIR) $(OBJS)
 
 $(LIBFT):
-	make -C $(LIB_DIR) $(LIBFT)
-
-kek:
-	echo $(SRCS)
+	@make -C $(LIB_DIR) $(LIBFT)
 
 $(OBJ_DIR)/%.o: $(CUR_DIR)/%.c
-	$(CC) $(CCFLAGS) -c $< -o $@ 
+	@echo "Compiling $< to $@"
+	@$(CC) $(CCFLAGS) -c $< -o $@ 
 
 $(NAME):
-	make -C $(CUR_DIR) $(LIBFT)
-	make -C $(CUR_DIR) $(OBJ_DIR)
-	$(CC) $(CCFLAGS) $(LIBFT_H) $(LIB_DIR)/$(LIBFT) $(OBJS) -o $(NAME)
+	@echo "Compiling Libft..."
+	@make -C $(CUR_DIR) $(LIBFT)
+	@echo "Creating objects directory...\n"
+	@make -C $(CUR_DIR) $(OBJ_DIR)
+	@echo "\nCompiling executable..."
+	@$(CC) $(CCFLAGS) $(LIBFT_H) $(LIB_DIR)/$(LIBFT) $(OBJS) -o $(NAME)
+	@echo "\nCOMPILED\n"
 
 clean:
+	@echo "Cleaning object files..."
 	@make -C $(LIB_DIR) fclean
 	@rm -rf $(OBJ_DIR)
+	@echo "\nCLEANED\n"
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "Deleting executable -> $(NAME)..."
+	@rm -f $(NAME)
+	@echo "\nDONE\n"
 
 re: fclean all
