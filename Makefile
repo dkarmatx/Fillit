@@ -6,7 +6,7 @@
 #    By: hgranule <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/12 17:30:27 by hgranule          #+#    #+#              #
-#    Updated: 2019/05/14 19:24:37 by dgreat           ###   ########.fr        #
+#    Updated: 2019/05/14 22:09:18 by hgranule         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,14 @@ $(NAME):
 	@echo "\nCompiling executable..."
 	@$(CC) $(CCFLAGS) $(LIBFT_H) $(LIB_DIR)/$(LIBFT) $(OBJS) -o $(NAME)
 	@echo "\nCOMPILED\n"
+
+debug:
+	@echo "Compiling Libft..."
+	@make -C $(CUR_DIR) $(LIBFT)
+	@echo "Compiling with debug flag..."
+	@$(CC) $(CCFLAGS) $(LIBFT_H) $(LIB_DIR)/$(LIBFT) $(SRCS) -o $(NAME) -g
+	@echo "\nCOMPILED\n"
+	
 
 clean:
 	@echo "Cleaning object files..."

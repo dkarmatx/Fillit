@@ -1,0 +1,8 @@
+.DS_store
+fillit
+fillit.dSYM
+libft/tmps
+libft/libft.a
+objects
+ttr.txt
+.vscode
