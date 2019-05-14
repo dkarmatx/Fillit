@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 04:27:42 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/13 06:38:17 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/14 22:54:53 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ t_dlist **cache_b)
 		(*cache) = (*cache)->next;
 		free(c);
 	}
+	if (*cache_b)
+		*cache_b = ft_dlstget(*cache_b, (size_t)-1);
 	while (*cache_b)
 	{
 		matrix++;
 		(*matrix) = (*cache_b)->content;
 		c = *cache_b;
-		(*cache_b) = (*cache_b)->next;
+		(*cache_b) = (*cache_b)->prev;
 		free(c);
 	}
 }
