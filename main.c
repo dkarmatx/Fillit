@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/14 19:25:02 by dgreat           ###   ########.fr       */
+/*   Updated: 2019/05/15 02:47:25 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static char			*x_init(unsigned short *ttrs, int square)
 	while (1)
 		if (*rm++ == 0)
 			continue ;
-		else if ((*(rm - 1))->content)
+		else if (!((*(rm - 1))->content))
 			break ;
 		else
 			ft_dlstdel((rm - 1), (size_t)-1);
-	if (*rm != 0)
-		ft_dlstdel(rm, (size_t)-1);
+	if (*(rm - 1) != 0)
+		ft_dlstrmelem(rm - 1);
 	free(matrix);
 	if (!b)
 		ft_strdel(&result);
