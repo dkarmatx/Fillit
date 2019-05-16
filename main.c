@@ -23,7 +23,7 @@ static char			*x_init(unsigned short *ttrs, int square)
 	char		*b;
 
 	matrix = (t_dlist **)matrix_init(ttrs, square);
-	result = (char *)malloc(square * square);
+	result = (char *)malloc(square * square);//TODO make safe
 	ft_memset(result, '.', square * square);
 	b = x_do_it(matrix, *matrix, result);
 	rm = matrix;
