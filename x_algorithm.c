@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 04:27:42 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/14 22:54:53 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:12:04 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char		x_cache_push(t_dlist **matrix, t_dlist *row, t_dlist **cache)
 			if (str[step[0]] != '.' || str[step[1]] != '.' || \
 			str[step[2]] != '.' || str[step[3]] != '.')
 			{
-				ft_dlstunshift(cache, ft_dlstnew(0, 0));//TODO make safe
+				ft_dlstunshift(cache, dlstnew_safe(0, 0));
 				(*cache)->content = ft_dlstcut(&row);
 				(*cache)->size = sizeof(t_dlist *);
 				if (!row || row->prev == 0)
@@ -88,9 +88,9 @@ static char		x_cache_b_push(t_dlist **matrix, t_dlist **cache_b)
 	while (!(*(++matrix)) || (*(matrix))->content)
 	{
 		if (*cache_b)
-			ft_dlstunshift(cache_b, ft_dlstnew(0, 0));//TODO make safe
+			ft_dlstunshift(cache_b, dlstnew_safe(0, 0));
 		else
-			*cache_b = ft_dlstnew(0, 0);//TODO make safe
+			*cache_b = dlstnew_safe(0, 0);
 		(*cache_b)->content = (*matrix);
 		(*cache_b)->size = (sizeof(t_dlist *));
 	}

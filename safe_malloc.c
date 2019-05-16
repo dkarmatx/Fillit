@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:20:39 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/16 18:35:30 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:10:12 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*malloc_safe(size_t n)
 		ft_putendl("malloc returned NULL");
 		exit(1);
 	}
-	return (mem);
+	return ((void *)mem);
 }
 
 t_dlist	*dlstnew_safe(void *content, size_t size)
@@ -34,5 +34,5 @@ t_dlist	*dlstnew_safe(void *content, size_t size)
 		ft_putendl("ft_dlstnew returned NULL");
 		exit(1);
 	}
-	return (list);
+	return ((t_dlist *)list);
 }

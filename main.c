@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 07:27:59 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/15 02:47:25 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:12:06 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char			*x_init(unsigned short *ttrs, int square)
 	char		*b;
 
 	matrix = (t_dlist **)matrix_init(ttrs, square);
-	result = (char *)malloc(square * square);//TODO make safe
+	result = (char *)malloc_safe(square * square);
 	ft_memset(result, '.', square * square);
 	b = x_do_it(matrix, *matrix, result);
 	rm = matrix;

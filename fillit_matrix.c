@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 04:33:20 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/16 18:33:32 by dgreat           ###   ########.fr       */
+/*   Updated: 2019/05/16 19:12:08 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char		*str_gen(unsigned short ttr, char c, int square, int step)
 	int			row;
 
 	i = 0;
-	str = (char *)malloc(square * square + 1);//TODO make safe
+	str = (char *)malloc_safe(square * square + 1);
 	str[square * square] = 0;
 	ft_memset(str, '.', square * square);
 	while (i++ < 4)
@@ -84,10 +84,10 @@ t_dlist		*matrix_gen(unsigned short ttr, char c, int square)
 		if ((str = str_gen(ttr, c, square, step)))
 		{
 			if (!matrix[0])
-				matrix[0] = ft_dlstnew(str, square2 + 1);//TODO make safe
+				matrix[0] = dlstnew_safe(str, square2 + 1);
 			else
 			{
-				matrix[1] = ft_dlstnew(str, square2 + 1);//TODO make safe
+				matrix[1] = dlstnew_safe(str, square2 + 1);
 				ft_dlstunshift(&(matrix[0]), matrix[1]);
 			}
 			ft_strdel(&str);
@@ -103,7 +103,7 @@ t_dlist		**matrix_init(unsigned short *ttrs, int square)
 	int				i;
 	char			c;
 
-	matrix = (t_dlist **)malloc(sizeof(t_dlist *) * (size + 1));//TODO make safe
+	matrix = (t_dlist **)malloc_safe(sizeof(t_dlist *) * (size + 1));
 	i = 0;
 	c = 'A';
 	while (i < size)
@@ -111,6 +111,6 @@ t_dlist		**matrix_init(unsigned short *ttrs, int square)
 		matrix[i] = matrix_gen(ttrs[i], c++, square);
 		i++;
 	}
-	matrix[size] = ft_dlstnew(0, 0);//TODO make safe
+	matrix[size] = dlstnew_safe(0, 0);
 	return (matrix);
 }
