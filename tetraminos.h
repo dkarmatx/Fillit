@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 04:58:10 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/14 19:26:55 by dgreat           ###   ########.fr       */
+/*   Updated: 2019/05/16 18:32:44 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "fillit_input.h"
 # include "fillit_handlers.h"
 # include "fillit_x.h"
+# include "safe_malloc.h"
 
 # define TETR_I_H (unsigned short)0b1111000000000000
 # define TETR_I_V (unsigned short)0b1000100010001000

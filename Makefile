@@ -6,7 +6,7 @@
 #    By: hgranule <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/12 17:30:27 by hgranule          #+#    #+#              #
-#    Updated: 2019/05/14 22:09:18 by hgranule         ###   ########.fr        #
+#    Updated: 2019/05/16 18:20:36 by hgranule         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LIB_DIR = $(CUR_DIR)/libft
 OBJ_DIR = $(CUR_DIR)/objects
 
 SRC =	file_parser.c fillit_handlers.c fillit_matrix.c \
-		main.c tetromino_parser.c x_algorithm.c
+		main.c tetromino_parser.c x_algorithm.c \
+		safe_malloc.c
 OBJ =	$(SRC:.c=.o)
 
 SRCS = $(addprefix $(CUR_DIR)/, $(SRC))
